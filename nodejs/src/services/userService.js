@@ -11,7 +11,8 @@ let handleUserLogin = (email, password) => {
             if (isExist) {
                 let user = await db.User.findOne({
                     where: { email },
-                    attributes: ['email', 'roleId'],
+                    attributes: ['email', 'roleId', 'password'],
+                    raw: true,
                 });
 
                 if (user) {
@@ -20,6 +21,8 @@ let handleUserLogin = (email, password) => {
                     if (check) {
                         userData.errCode = 0;
                         userData.errMessage = 'OK';
+
+                        delete user.password;
                         userData.user = user;
                     } else {
                         userData.errCode = 3;
